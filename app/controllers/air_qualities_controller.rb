@@ -31,7 +31,8 @@ class AirQualitiesController < ApplicationController
 def llenado
     AirQuality.delete_all
     doc = Nokogiri::XML(open("http://148.243.232.110/xml/app/appcalidadaire.XML")).slop!
-      AirQuality.create(title: doc.monitoreoatmosferico.link.text, 
+      AirQuality.create(
+        title: doc.monitoreoatmosferico.title.text, 
         link: doc.monitoreoatmosferico.link.text,
         description: 'SEDEMA Calidad del aire',
         reporte: doc.monitoreoatmosferico.calidadaire.reporte.text,
