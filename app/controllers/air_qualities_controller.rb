@@ -6,6 +6,10 @@ class AirQualitiesController < ApplicationController
   def index
     @air_qualities = AirQuality.all
 
+    require 'open-uri'
+    doc = Nokogiri::XML(open("http://148.243.232.110/xml/app/appcalidadaire.XML")).slop!
+      puts  doc.monitoreoatmosferico.title.text
+
     render json: @air_qualities
   end
 
