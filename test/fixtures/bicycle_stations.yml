@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id_station: 
+  name: 
+  address: 
+  addressNumber: 
+  zipCode: 
+  districtCode: 
+  nearbyStations: 
+  location: 
+  stationType: MyText
+
+two:
+  id_station: 
+  name: 
+  address: 
+  addressNumber: 
+  zipCode: 
+  districtCode: 
+  nearbyStations: 
+  location: 
+  stationType: MyText
