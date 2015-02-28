@@ -1,6 +1,7 @@
-class SemoviTaxis < ApplicationController
-  @wsdl = 'http://www.taxi.df.gob.mx/ws/ws_taxi?wsdl'
-  @exp_placa = /[abm][\d]{5}/i
+class SemoviTaxisController < ApplicationController
+  @@wsdl = 'http://www.taxi.df.gob.mx/ws/ws_taxi?wsdl'
+  @@exp_placa = /[abm][\d]{5}/i
+  @@client = Savon.client(wsdl: @@wsdl, log_level: :error, log: false)
 
 
   def index
@@ -14,25 +15,25 @@ class SemoviTaxis < ApplicationController
 
 
   def parsed_placa params
-    return nil unless params.include? :placa
-    placa = params[:placa].gsub(/[abm\d]/, '')
-    return nil unless @exp_placa.match(params:placa)
-    placa.upcase
+    return nil unless params.include? :id
+    placa = params[:id].gsub(/[^abm\d]/i, '')
+    return nil unless @@exp_placa.match(placa)
+    return placa.upcase
   end
 
 
   def do_soap placa
     message = {
-      'ps_pasword' => ENV['semovi.taxis.password'],
+      'ps_pasword' => ENV['SEMOVI_TAXIS_PASSWORD'],
       'ps_placa' => placa
     }
 
-    client = Savon.client(wsdl: @wsdl, log_level: :error, log: false)
-
     begin
-      response = client.call :consulta, message: message
+      response = @@client.call :consulta, message: message
     rescue Savon::SOAPFault => e
-      raise "Error de backend: e.message"
+      raise "Error de backend: #{e.message}"
+    rescue Net::ReadTimeout => e
+      raise "Error de backend #{e.message}"
     end
 
     keys = [:code, :placa, :marca_modelo, :status, :fecha]
@@ -49,14 +50,13 @@ class SemoviTaxis < ApplicationController
 
 
 
-  def consulta
+  def show
     placa = parsed_placa(params)
 
     return render(json: {error: 'placa inválida'}) unless placa
 
-    if @taxi = Taxi.where(placa: params[:placa])
-      render json: @taxi
-    else
+    @taxi = Taxi.where(placa: placa).first
+    if !@taxi
       begin
         @taxi = Taxi.create do_soap(placa)
       rescue Exception => e
@@ -64,7 +64,7 @@ class SemoviTaxis < ApplicationController
       end
     end
 
-
+    render json: @taxi
   end
 
 end

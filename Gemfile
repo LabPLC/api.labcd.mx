@@ -9,6 +9,7 @@ gem 'spring', :group => :development
 
 
 gem 'sqlite3'
+gem 'savon'
 
 gem 'nokogiri', '~> 1.6.6.2'
 
