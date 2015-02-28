@@ -38,4 +38,6 @@ config/database.yml
 .DS_Store
 
 # Cloud 9
-/.c9//db/*.sqlite3
+/.c9/
+
+/db/*.sqlite3
