@@ -4,24 +4,19 @@ class SemoviTaxisController < ApplicationController
   @@exp_placa = /[abm][\d]{5}/i
   @@client = Savon.client(wsdl: @@wsdl, log_level: :error, log: false)
 
-
   # GET /
   def index
     @taxis = Taxi.all
-    if @taxis.nil?
-      return render json: []
-    end
-
     render json: @taxis
   end
 
   # GET /placa{.json}
   def show
-    placa = parsed_placa(params.symbolize_keys)
-    return render(json: {error: 'placa inválida'}) unless placa
+    placa = parsed_placa
+    return render(json: { error: 'placa inválida' }) unless placa
 
-    @taxi = Taxi.where(placa: placa).first
-    if !@taxi
+    @taxi = Taxi.find_by_placa(placa)
+    unless @taxi.present?
       begin
         @taxi = Taxi.create do_soap(placa)
       rescue Exception => e
@@ -39,13 +34,12 @@ class SemoviTaxisController < ApplicationController
   # @param params [Hash] Los parámetros del request
   #
   # @return [String, NilClass] la placa limpia
-  def parsed_placa params
-    return nil unless params.include? :id
+  def parsed_placa
     placa = params[:id].gsub(/[^abm\d]/i, '')
-    return nil unless @@exp_placa.match(placa)
-    return placa.upcase
+    if @@exp_placa.match(placa)
+      placa.upcase
+    end
   end
-
 
   # Ejecuta el call al webservice
   #
