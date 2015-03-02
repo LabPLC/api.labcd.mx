@@ -10,6 +10,7 @@
 /tmp/
 /log/
 
+
 ## Specific to RubyMotion:
 .dat*
 .repl_history
@@ -41,3 +42,5 @@ config/database.yml
 /.c9/
 
 /db/*.sqlite3
+# Ignore application configuration
+/config/application.yml

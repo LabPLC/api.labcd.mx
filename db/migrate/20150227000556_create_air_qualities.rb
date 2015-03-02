@@ -23,7 +23,6 @@ class CreateAirQualities < ActiveRecord::Migration
       t.text :imgiuvuser
       t.text :caliuvuser
       t.text :coliuvuser
-
       t.timestamps null: false
     end
   end

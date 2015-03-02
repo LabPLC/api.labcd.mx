@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150228204412) do
+ActiveRecord::Schema.define(version: 20150302192800) do
 
   create_table "air_qualities", force: :cascade do |t|
     t.text     "title"
@@ -38,6 +38,36 @@ ActiveRecord::Schema.define(version: 20150228204412) do
     t.text     "coliuvuser"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "bicycle_stations", force: :cascade do |t|
+    t.integer  "id_station"
+    t.text     "name"
+    t.text     "address"
+    t.text     "addressNumber"
+    t.text     "zipCode"
+    t.text     "districtCode"
+    t.text     "nearbyStations"
+    t.text     "location"
+    t.text     "stationType"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  create_table "bicycle_stations_statuses", force: :cascade do |t|
+    t.integer  "id_station"
+    t.string   "status"
+    t.string   "bikes"
+    t.string   "slots"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "saves", force: :cascade do |t|
+    t.text     "access_token"
+    t.datetime "fecha"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "taxis", force: :cascade do |t|
