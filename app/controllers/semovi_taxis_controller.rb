@@ -1,7 +1,25 @@
 class SemoviTaxisController < ApplicationController
   @@wsdl = 'http://www.taxi.df.gob.mx/ws/ws_taxi?wsdl'
   @@exp_placa = /[abm][\d]{5}/i
-  @@client = Savon.client(wsdl: @@wsdl, log_level: :error, log: false)
+
+  @@cliente = Burocracia::WS.new(@@wsdl) do |client|
+    client.default_params = {'ps_pasword' => ENV['SEMOVI_TAXIS_PASSWORD']}
+    client.default_action = :consulta
+    client.default_response = :consulta_response
+
+    client.response_parser = -> (data){
+      keys = [:code, :placa, :marca_modelo, :status, :fecha]
+      data = Hash[keys.zip(data[:return])]
+
+      case data[:code]
+        when "-3" then raise "Vehículo no localizado"
+        when "-1" then raise "Credenciales incorrectas"
+      end
+
+      data[:fecha] = Time.parse(data[:fecha]) if data[:fecha] rescue nil
+      data
+    }
+  end
 
 
   # GET /
@@ -23,9 +41,10 @@ class SemoviTaxisController < ApplicationController
     @taxi = Taxi.where(placa: placa).first
     if !@taxi
       begin
-        @taxi = Taxi.create do_soap(placa)
+        # @taxi = Taxi.create @@cliente.call({'ps_placa' => placa})
+        @taxi = @@cliente.call({'ps_placa' => placa})
       rescue Exception => e
-        return render json: {error: e.message}
+        return render json: {error: e.message, backtrace: e.backtrace}
       end
     end
 
@@ -44,39 +63,6 @@ class SemoviTaxisController < ApplicationController
     placa = params[:id].gsub(/[^abm\d]/i, '')
     return nil unless @@exp_placa.match(placa)
     return placa.upcase
-  end
-
-
-  # Ejecuta el call al webservice
-  #
-  # @param [String] placa una placa limipia
-  #
-  # @return [Hash] el objeto de un taxi
-  def do_soap placa
-    # strings porque savon
-    message = {
-      'ps_pasword' => ENV['SEMOVI_TAXIS_PASSWORD'],
-      'ps_placa' => placa
-    }
-
-    begin
-      response = @@client.call :consulta, message: message
-    rescue Savon::SOAPFault => e
-      raise "Error de backend: #{e.message}"
-    rescue Net::ReadTimeout => e
-      raise "Error de backend #{e.message}"
-    end
-
-    keys = [:code, :placa, :marca_modelo, :status, :fecha]
-    data = Hash[keys.zip(response.body[:consulta_response][:return])]
-
-    case data[:code]
-      when "-3" then raise "Vehículo no localizado"
-      when "-1" then raise "Credenciales incorrectas"
-    end
-
-    data[:fecha] = Time.parse(data[:fecha]) if data[:fecha] rescue nil
-    data
   end
 
 end
