@@ -17,11 +17,12 @@ class FinanzasPagosController < ApplicationController
   end
 
 
+  # GET /{linea-de-captura}?importe={Float}[&fecha={String})
   def show
     begin
       fecha = Date.parse(params[:fecha]) if params[:fecha]
     rescue
-      return render json: {error: 'La fecha no viene en formato YYYY-MM-DD'}
+      return render status: 400, json: {error: 'La fecha no viene en formato YYYY-MM-DD'}
     end
 
 
@@ -35,12 +36,12 @@ class FinanzasPagosController < ApplicationController
     begin
       response = @@cliente.call({pregunta: query})
     rescue Exception => e
-      return render json: {error: e.message}
+      return render status: 500, json: {error: e.message}
     end
 
     if response[:error].to_i > 0
       errores = response[:error_descripcion].split(/(?=[A-Z])/)
-      response = {error: errores}
+      response = {valida: false, error: errores}
     else
       response = {valida: response[:valida].to_i==1}
     end

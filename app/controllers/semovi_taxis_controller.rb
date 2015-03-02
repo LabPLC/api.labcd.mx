@@ -26,6 +26,7 @@ class SemoviTaxisController < ApplicationController
   def index
     @taxis = Taxi.all
     if @taxi.nil?
+      # debería de regresar un 204, pero rails no regresa content con eso
       return render json: []
     end
 
@@ -36,19 +37,20 @@ class SemoviTaxisController < ApplicationController
   def show
     placa = parsed_placa(params)
 
-    return render(json: {error: 'placa inválida'}) unless placa
+    return render(status: 400, json: {error: 'placa inválida'}) unless placa
 
     @taxi = Taxi.where(placa: placa).first
+    status = 200
     if !@taxi
+      status = 201
       begin
-        # @taxi = Taxi.create @@cliente.call({'ps_placa' => placa})
-        @taxi = @@cliente.call({'ps_placa' => placa})
+        @taxi = Taxi.create @@cliente.call({'ps_placa' => placa})
       rescue Exception => e
-        return render json: {error: e.message, backtrace: e.backtrace}
+        return render status: 500, json: {error: e.message}
       end
     end
 
-    render json: @taxi
+    render status: status, json: @taxi
   end
 
 
