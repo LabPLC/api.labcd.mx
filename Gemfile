@@ -5,6 +5,8 @@ gem 'rails-api'
 gem 'sqlite3'
 gem 'savon'
 gem 'nokogiri', '~> 1.6.6.2'
+gem 'httparty', '~> 0.13.3'
+gem "figaro"
 
 group :development, :test do
   gem "rspec-rails", '~> 3.0.0'
