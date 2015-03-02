@@ -39,3 +39,5 @@ config/database.yml
 
 # Cloud 9
 /.c9/
+
+/db/*.sqlite3

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150227000556) do
+ActiveRecord::Schema.define(version: 20150228204412) do
 
   create_table "air_qualities", force: :cascade do |t|
     t.text     "title"
@@ -39,5 +39,17 @@ ActiveRecord::Schema.define(version: 20150227000556) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
+
+  create_table "taxis", force: :cascade do |t|
+    t.text     "code"
+    t.text     "placa"
+    t.text     "marca_modelo"
+    t.text     "status"
+    t.datetime "fecha"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "taxis", ["placa"], name: "index_taxis_on_placa", unique: true
 
 end
