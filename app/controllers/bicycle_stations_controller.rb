@@ -13,6 +13,7 @@ class BicycleStationsController < ApplicationController
 
 
   def obtener_estaciones
+     puts 'obteniendo estaciones'
     @bicycle_stations = BicycleStation.all
     if estaciones_no_guardadas
       guardar_estaciones
@@ -25,23 +26,21 @@ class BicycleStationsController < ApplicationController
       if @bicycle_stations.empty?
         true
       else
-        if BicycleStation.last.created_at.yesterday 
-          return true
-        else
+        unless BicycleStation.last.created_at <  Time.now - 10.day
           return false
+        else
+          return true
         end
       end
     end
 
 
     def guardar_estaciones
-          BicycleStation.delete_all
+         BicycleStation.delete_all
           url = "https://pubsbapi.smartbike.com/api/v1/stations.json?access_token=#{@llave.access_token}"
          json =  response = HTTParty.get(url)
           response = JSON.parse(json.body)
-        
           response['stations'].each do |res|
-            
             BicycleStation.create(
               id_station: res['id'],
               name: res['name'],
@@ -55,7 +54,10 @@ class BicycleStationsController < ApplicationController
               )
 
           end
+         
     end
+
+
 
     def geopunto(lat, lon)
         lat.to_s + ',' + lon.to_s
@@ -65,6 +67,8 @@ class BicycleStationsController < ApplicationController
       arreglo.map(&:inspect).join(', ')
     end
 
+
+
     def get_llave
       @llave = Save.all.last
       if  @llave.nil?
@@ -73,6 +77,7 @@ class BicycleStationsController < ApplicationController
         obtener_llave
       end
       @llave = Save.all.last
+      puts @llave
     end
 
 
