@@ -10,6 +10,7 @@
 /tmp/
 /log/
 
+
 ## Specific to RubyMotion:
 .dat*
 .repl_history
@@ -39,3 +40,6 @@ config/database.yml
 
 # Cloud 9
 /.c9/
+
+# Ignore application configuration
+/config/application.yml

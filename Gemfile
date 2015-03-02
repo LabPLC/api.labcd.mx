@@ -12,6 +12,7 @@ gem 'sqlite3'
 
 gem 'nokogiri', '~> 1.6.6.2'
 gem 'httparty', '~> 0.13.3'
+gem "figaro"
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

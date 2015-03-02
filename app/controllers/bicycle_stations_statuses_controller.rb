@@ -7,6 +7,8 @@ class BicycleStationsStatusesController < ApplicationController
     require 'httparty'
     require 'json'
     get_llave#obtenemos la llava temporal
+    puts '"""""""""""""""'
+    puts @llave.access_token
     obtener_status_estaciones #obtenemos las estaciones
 
     render json: @bicycle_stations_statuses

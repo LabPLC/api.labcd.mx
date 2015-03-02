@@ -2,13 +2,12 @@ class ApplicationController < ActionController::API
 
       def get_llave
       @llave = Save.all.last
-      if  @llave.nil?
+      if  @llave.nil? || @llave.access_token.nil?
         obtener_llave
       elsif  !llave_invalida
         obtener_llave
       end
       @llave = Save.all.last
-      puts @llave
     end
 
     def llave_invalida
@@ -16,8 +15,10 @@ class ApplicationController < ActionController::API
       @llave.fecha.to_time+1.hours > fecha_actual 
     end
 
+
     def obtener_llave
-      url = 'https://pubsbapi.smartbike.com/oauth/v2/token?client_id=121_2w73hco7wim8cs8ogkkso8kwwokcwwwoc0sw4448okogg4k04g&client_secret=e59lz46vys08kwgo0g4w4k0ow8gw8g8sg08scs4gkkg4w8os4&grant_type=client_credentials'
+      url = "https://pubsbapi.smartbike.com/oauth/v2/token?client_id=#{ENV['pusher_client_id']}&client_secret=#{ENV['pusher_client_secret']}&grant_type=client_credentials"
+     puts url
       response = response = HTTParty.get(url)
       json = JSON.parse(response.body)
       Save.delete_all
