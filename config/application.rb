@@ -19,7 +19,17 @@ module Labcdmx
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-
+    config.generators do |gen|
+      gen.orm :active_record
+      gen.test_framework :rspec
+      gen.fixture_replacement :factory_girl, dir: 'spec/factories'
+      gen.view_specs = false
+      gen.controller_specs = false
+      gen.routing_specs = false
+      gen.helper = false
+      gen.stylesheets = false
+      gen.javascripts = false
+    end
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
   end

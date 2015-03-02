@@ -1,3 +1,4 @@
+#encoding: utf-8
 class SemoviTaxisController < ApplicationController
   @@wsdl = 'http://www.taxi.df.gob.mx/ws/ws_taxi?wsdl'
   @@exp_placa = /[abm][\d]{5}/i
@@ -7,7 +8,7 @@ class SemoviTaxisController < ApplicationController
   # GET /
   def index
     @taxis = Taxi.all
-    if @taxi.nil?
+    if @taxis.nil?
       return render json: []
     end
 
@@ -16,8 +17,7 @@ class SemoviTaxisController < ApplicationController
 
   # GET /placa{.json}
   def show
-    placa = parsed_placa(params)
-
+    placa = parsed_placa(params.symbolize_keys)
     return render(json: {error: 'placa inválida'}) unless placa
 
     @taxi = Taxi.where(placa: placa).first
@@ -78,5 +78,4 @@ class SemoviTaxisController < ApplicationController
     data[:fecha] = Time.parse(data[:fecha]) if data[:fecha] rescue nil
     data
   end
-
 end
