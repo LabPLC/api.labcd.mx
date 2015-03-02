@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150227225813) do
+ActiveRecord::Schema.define(version: 20150302192800) do
 
   create_table "air_qualities", force: :cascade do |t|
     t.text     "title"
@@ -52,6 +52,15 @@ ActiveRecord::Schema.define(version: 20150227225813) do
     t.text     "stationType"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+  end
+
+  create_table "bicycle_stations_statuses", force: :cascade do |t|
+    t.integer  "id_station"
+    t.string   "status"
+    t.string   "bikes"
+    t.string   "slots"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "saves", force: :cascade do |t|
