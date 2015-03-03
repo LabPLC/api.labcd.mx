@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
 
       #get llave ECOBICI
-      def get_llave
+    def ecobici_temporal_key
       @llave = Save.all.last
       if  @llave.nil? || @llave.access_token.nil?
         obtener_llave
