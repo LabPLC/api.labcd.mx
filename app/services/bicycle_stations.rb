@@ -10,7 +10,32 @@ module BicycleStations
     generate_bycicle_stations(JSON.parse(response.body)["stations"])
   end
 
+  def self.station_status_for(station_record)
+    {
+      id: station_record.id_station,
+      status: station_record.status,
+      bikes: station_record.bikes,
+      slots: station_record.slots
+    }
+  end
+
+  def self.reload_stations_status(url:, access_token:, records:)
+    response = HTTParty.get(url, query: { access_token: access_token })
+    update_bycicle_stations_status(JSON.parse(response.body)["stationsStatus"], records)
+  end
+
   private
+
+  def self.update_bycicle_stations_status(stations_status, stations)
+    stations.each do |station|
+      status = stations_status.select { |status| status["id"] == station.id_station }.first
+      station.status = status["status"]
+      station.slots = status["availability"]["slots"]
+      station.bikes = status["availability"]["bikes"]
+    end
+
+    stations
+  end
 
   def self.generate_bycicle_stations(stations)
     stations.map do |station|
