@@ -25,7 +25,7 @@ class SemoviTaxisController < ApplicationController
   # GET /
   def index
     @taxis = Taxi.all
-    if @taxi.nil?
+    if @taxis.nil?
       # debería de regresar un 204, pero rails no regresa content con eso
       return render json: []
     end
