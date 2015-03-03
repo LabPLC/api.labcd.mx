@@ -2,7 +2,7 @@ module BicycleStations
   include HTTParty
 
   def self.are_up_to_date?(stations_records)
-    stations_records.any? && !any_station_created_before?(10.days.ago, stations_records)
+    stations_records.any? && all_stations_created_after?(10.days.ago, stations_records)
   end
 
   def self.reload_stations(url:, access_token:)
@@ -73,7 +73,7 @@ module BicycleStations
     end
   end
 
-  def self.any_station_created_before?(days_ago, stations)
-    stations.select { |station| station.created_at <= days_ago }.first.present?
+  def self.all_stations_created_after?(days_ago, stations)
+    stations.all? { |station| station.created_at > days_ago }
   end
 end
