@@ -10,13 +10,33 @@ module BicycleStations
     generate_bycicle_stations(JSON.parse(response.body)["stations"])
   end
 
-  def self.station_status_for(station_record)
+  def self.stations_for(stations_records)
+    stations_records.map { |station| station_response(station) }
+  end
+
+  def self.station_response(station_record)
     {
       id: station_record.id_station,
+      name: station_record.name,
+      address: station_record.address,
+      address_number: station_record.address_number,
+      zip_code: station_record.zip_code,
+      district_code: station_record.district_code,
+      nearby_stations: station_record.nearby_stations,
+      location: station_record.location,
+      station_type: station_record.station_type,
+      created_at: station_record.created_at,
+      updated_at: station_record.updated_at
+    }
+  end
+
+  def self.station_status_response(station_record)
+    station_response(station_record).merge(
+    {
       status: station_record.status,
       bikes: station_record.bikes,
       slots: station_record.slots
-    }
+    })
   end
 
   def self.reload_stations_status(url:, access_token:, records:)
@@ -43,12 +63,12 @@ module BicycleStations
         id_station: station['id'],
         name: station['name'],
         address: station['address'],
-        addressNumber: station['addressNumber'],
-        zipCode: station['zipCode'],
-        districtCode: station['districtCode'],
-        nearbyStations: station['nearbyStations'].join(', '),
+        address_number: station['addressNumber'],
+        zip_code: station['zipCode'],
+        district_code: station['districtCode'],
+        nearby_stations: station['nearbyStations'].join(', '),
         location: "#{station['location']['lat']}, #{station['location']['lon']}",
-        stationType: station['stationType']
+        station_type: station['stationType']
       )
     end
   end

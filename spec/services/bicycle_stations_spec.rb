@@ -12,6 +12,28 @@ module BicycleStations
     end
   end
 
+  class TestBicycleStation
+    attr_reader :id_station
+    attr_accessor :status, :slots, :bikes, :name, :address, :address_number, :zip_code, :district_code, :nearby_stations, :location, :station_type, :created_at, :updated_at
+
+    def initialize(attrs)
+      @id_station = attrs[:id_station]
+      @name = attrs[:name]
+      @address = attrs[:address]
+      @address_number =  attrs[:address_number]
+      @zip_code = attrs[:zip_code]
+      @district_code = attrs[:district_code]
+      @nearby_stations = attrs[:nearby_stations]
+      @location = attrs[:location]
+      @station_type = attrs[:station_type]
+      @created_at = attrs[:created_at]
+      @updated_at = attrs[:updated_at]
+      @status = attrs[:status]
+      @slots = attrs[:slots]
+      @bikes = attrs[:bikes]
+    end
+  end
+
   describe 'are up to date' do
 
     attr_reader :old_station, :new_station
@@ -57,31 +79,49 @@ module BicycleStations
       first_station = stations_response.first
       expect(first_station.id_station).to eq 3
       expect(first_station.name).to eq "3 REFORMA-INSURGENTES"
-      expect(first_station.zipCode).to eq "06500"
+      expect(first_station.zip_code).to eq "06500"
     end
   end
 
-  describe 'station status' do
+  describe 'station status response' do
     attr_reader :station
 
     before do
-      @station = double "Station", status: "OPN", slots: "4", bikes: "3", id_station: 4
+      @station = TestBicycleStation.new(status: "OPN", slots: "4", bikes: "3", id_station: 4)
     end
 
     it 'returns the id of the station' do
-      expect(BicycleStations.station_status_for(station)[:id]).to eq 4
+      expect(BicycleStations.station_status_response(station)[:id]).to eq 4
     end
 
     it 'returns the status of the station' do
-      expect(BicycleStations.station_status_for(station)[:status]).to eq "OPN"
+      expect(BicycleStations.station_status_response(station)[:status]).to eq "OPN"
     end
 
     it 'returns the number of slots of the station' do
-      expect(BicycleStations.station_status_for(station)[:slots]).to eq "4"
+      expect(BicycleStations.station_status_response(station)[:slots]).to eq "4"
     end
 
     it 'returns the number of bikes of the station' do
-      expect(BicycleStations.station_status_for(station)[:bikes]).to eq "3"
+      expect(BicycleStations.station_status_response(station)[:bikes]).to eq "3"
+    end
+  end
+
+  describe 'station response' do
+    attr_reader :station
+
+    before do
+      @station = TestBicycleStation.new(id_station: 4, name: "Name", address: "Address", address_number: "Address number", zip_code: "80800", district_code: "X", nearby_stations: "1, 2", location: "Loc", station_type: "type", created_at: 1.day.ago, updated_at: 1.day.ago)
+    end
+
+    it "returns the #{attr} for the station" do
+      expect(BicycleStations.station_response(station)[:id]).to eq 4
+    end
+    
+    [:name, :address, :address_number, :zip_code, :district_code, :nearby_stations, :location, :station_type, :created_at, :updated_at].each do |attr|
+      it "returns the #{attr} for the station" do
+        expect(BicycleStations.station_response(station)[attr]).to eq station.send(attr)
+      end
     end
   end
 
@@ -91,15 +131,6 @@ module BicycleStations
     before do
       @fake_response = TestFakeResponse.new("{\"stationsStatus\":[{\"id\":1,\"status\":\"OPN\",\"availability\":{\"bikes\":25,\"slots\":2}},{\"id\":2,\"status\":\"OPN\",\"availability\":{\"bikes\":1,\"slots\":11}}]}")
       @stations = [TestBicycleStation.new(id_station: 1), TestBicycleStation.new(id_station: 2)]
-    end
-
-    class TestBicycleStation
-      attr_reader :id_station
-      attr_accessor :status, :slots, :bikes
-
-      def initialize(id_station:)
-        @id_station = id_station
-      end
     end
 
     it 'calls the endpoint with right url and access token' do

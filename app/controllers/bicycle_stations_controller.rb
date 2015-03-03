@@ -9,15 +9,10 @@ class BicycleStationsController < ApplicationController
       @bicycle_stations.each(&:save)
     end
 
-    render json: @bicycle_stations 
+    render json: BicycleStations.stations_for(@bicycle_stations)
   end
 
   def show
-    @bicycle_station = bicycle_station
-    render json: @bicycle_station
-  end
-
-  def status
     @bicycle_station = bicycle_station
 
     unless @bicycle_station.status_is_present?
@@ -25,7 +20,7 @@ class BicycleStationsController < ApplicationController
       bicycle_stations.each(&:save)
     end
 
-    render json: BicycleStations.station_status_for(@bicycle_station.reload)
+    render json: BicycleStations.station_status_response(@bicycle_station.reload)
   end
 
   private
