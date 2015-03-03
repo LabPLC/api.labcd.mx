@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   resources :air_qualities, except: [:new, :edit]
   resources :semovi_taxis
-  resources :finanzas_pagos
+  namespace :finanzas do
+    resources :linea_captura
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
