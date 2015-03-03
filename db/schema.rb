@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20150303223408) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "air_qualities", force: :cascade do |t|
     t.text     "title"
     t.text     "link"
@@ -86,7 +89,7 @@ ActiveRecord::Schema.define(version: 20150303223408) do
     t.datetime "updated_at",   null: false
   end
 
-  add_index "taxis", ["placa"], name: "index_taxis_on_placa", unique: true
+  add_index "taxis", ["placa"], name: "index_taxis_on_placa", unique: true, using: :btree
 
   create_table "vehicles", force: :cascade do |t|
     t.text     "placa"

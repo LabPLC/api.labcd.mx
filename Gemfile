@@ -1,9 +1,14 @@
 source 'http://rubygems.org'
 
 ruby '2.2.0'
+
 gem 'rails', '4.2.0'
 gem 'rails-api'
-gem 'sqlite3'
+gem 'spring', :group => :development
+
+# PostgreSQL as DB
+gem 'pg'
+
 gem 'savon'
 gem 'nokogiri', '~> 1.6.6.2'
 gem 'httparty', '~> 0.13.3'
