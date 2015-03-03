@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  folio: MyText
+  fecha: MyText
+  situacion: MyText
+  motivo: MyText
+  fundamento: MyText
+  sancion: MyText
+
+two:
+  folio: MyText
+  fecha: MyText
+  situacion: MyText
+  motivo: MyText
+  fundamento: MyText
+  sancion: MyText

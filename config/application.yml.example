@@ -1,2 +1,3 @@
-pusher_client_id: tu_llave
-pusher_client_secret:  tu_llave
+pusher_client_id: tu_llave_ecobici
+pusher_client_secret:  tu_llave_ecobici
+SEMOVI_TAXIS_PASSWORD: tu_llave_semovi
