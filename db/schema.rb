@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20150303223408) do
     t.integer  "id_vehicle"
   end
 
+
   create_table "saves", force: :cascade do |t|
     t.text     "access_token"
     t.datetime "fecha"

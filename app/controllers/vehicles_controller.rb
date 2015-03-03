@@ -19,13 +19,47 @@ class VehiclesController < ApplicationController
   end
 
   def save_vehicle(placa)
-    url = "http://datos.labplc.mx/movilidad/vehiculos/#{placa}.json"
-    puts url
-     json =  response = HTTParty.get(url)
+    @url = "http://datos.labplc.mx/movilidad/vehiculos/#{placa}.json"
+     json =  response = HTTParty.get(@url)
       response = JSON.parse(json.body)
-      response['consulta']['tenencias'].each do |consultar|
-        puts consultar['placa']  
-      end
+      #Obtenemos tenencia
+    a =   Vehicle.create(placa: response['consulta']['tenencias']['placa'], 
+        fechas_adeudo_tenecia: response['consulta']['tenencias']['adeudos'],
+        tiene_adeudo_tenencia: response['consulta']['tenencias']['tieneadeudos'])
+
+      #Obtener Infracciones
+      response['consulta']['infracciones'].each do |inf|
+
+        Infraction.create(folio: inf['folio'], 
+          fecha: inf['fecha'],
+          situacion: inf['situacion'],
+          motivo: inf['motivo'],
+          fundamento: inf['fundamento'],
+          sancion: inf['sancion'],
+          id_vehicle: a.id
+          )
+      end 
+
+      response['consulta']['verificaciones'].each do |inf|
+          Verification.create(vin: inf['vin'],
+            marca: inf['marca'],
+            submarca: inf['submarca'],
+            modelo: inf['modelo'],
+            combustible: inf['combustible'],
+            certificado: inf['certificado'],
+           cancelado: inf['cancelado'],
+            vigencia:  inf['vigencia'],
+            verificentro: inf['verificentro'],
+            linea: inf['linea'],
+            fecha_verificacion: inf['fecha_verificacion'],
+            hora_verificacion: inf['hora_verificacion'],
+            resultado: inf['resultado'],
+            causa_rechazo: inf['causa_rechazo'],
+            equipo_gdf: inf['equipo_gdf'],
+            id_vehicle: a.id
+            )
+      end 
+
       Vehicle.all
   end
 
