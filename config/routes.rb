@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   resources :semovi_taxis
   namespace :finanzas do
     resources :linea_captura
+    resources :pagos, only: [] do
+      get :consulta, on: :collection
+    end
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
