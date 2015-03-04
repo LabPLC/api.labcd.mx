@@ -3,9 +3,8 @@ module Finanzas
   class PagosController < ApplicationController
     before_action :ensure_valid_date_param
 
-    # GET finanzas/pagos/consulta?linea_captura=[string]&importe=[float]&fechapago=[string]
+    # GET finanzas/pagos/consulta?linea_captura=[string]&importe=[string]&fechapago=[string]
     def consulta
-
       query_parameters = {
         lineacaptura: params[:lineacaptura] || params[:linea],
         importe: params[:importe],
@@ -14,8 +13,8 @@ module Finanzas
 
       begin
         response = client.call({ pregunta: query_parameters })
-      #rescue Exception => e
-      #  return render status: 500, json: { error: e.message }
+      rescue Exception => e
+        return render status: 500, json: { error: e.message }
       end
 
       render json: WsdlClients.payment_response_for(response)
