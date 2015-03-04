@@ -2,29 +2,54 @@
 class SemoviTaxisController < ApplicationController
   @@wsdl = 'http://www.taxi.df.gob.mx/ws/ws_taxi?wsdl'
   @@exp_placa = /[abm][\d]{5}/i
-  @@client = Savon.client(wsdl: @@wsdl, log_level: :error, log: false)
+
+  @@cliente = Burocracia::WS.new(@@wsdl) do |client|
+    client.default_params = {'ps_pasword' => ENV['SEMOVI_TAXIS_PASSWORD']}
+    client.default_action = :consulta
+    client.default_response = :consulta_response
+
+    client.response_parser = -> (data){
+      keys = [:code, :placa, :marca_modelo, :status, :fecha]
+      data = Hash[keys.zip(data[:return])]
+
+      case data[:code]
+        when "-3" then raise "Vehículo no localizado"
+        when "-1" then raise "Credenciales incorrectas"
+      end
+
+      data[:fecha] = Time.parse(data[:fecha]) if data[:fecha] rescue nil
+      data
+    }
+  end
 
   # GET /
   def index
     @taxis = Taxi.all
+    if @taxis.nil?
+      # debería de regresar un 204, pero rails no regresa content con eso
+      return render json: []
+    end
     render json: @taxis
   end
 
   # GET /placa{.json}
   def show
-    placa = parsed_placa
-    return render(json: { error: 'placa inválida' }) unless placa
+    placa = parsed_placa(params)
 
-    @taxi = Taxi.find_by_placa(placa)
-    unless @taxi.present?
+    return render(status: 400, json: {error: 'placa inválida'}) unless placa
+
+    @taxi = Taxi.where(placa: placa).first
+    status = 200
+    if !@taxi
+      status = 201
       begin
-        @taxi = Taxi.create do_soap(placa)
+        @taxi = Taxi.create @@cliente.call({'ps_placa' => placa})
       rescue Exception => e
-        return render json: {error: e.message}
+        return render status: 500, json: {error: e.message}
       end
     end
 
-    render json: @taxi
+    render status: status, json: @taxi
   end
 
 
@@ -39,37 +64,5 @@ class SemoviTaxisController < ApplicationController
     if @@exp_placa.match(placa)
       placa.upcase
     end
-  end
-
-  # Ejecuta el call al webservice
-  #
-  # @param [String] placa una placa limipia
-  #
-  # @return [Hash] el objeto de un taxi
-  def do_soap placa
-    # strings porque savon
-    message = {
-      'ps_pasword' => ENV['SEMOVI_TAXIS_PASSWORD'],
-      'ps_placa' => placa
-    }
-
-    begin
-      response = @@client.call :consulta, message: message
-    rescue Savon::SOAPFault => e
-      raise "Error de backend: #{e.message}"
-    rescue Net::ReadTimeout => e
-      raise "Error de backend #{e.message}"
-    end
-
-    keys = [:code, :placa, :marca_modelo, :status, :fecha]
-    data = Hash[keys.zip(response.body[:consulta_response][:return])]
-
-    case data[:code]
-      when "-3" then raise "Vehículo no localizado"
-      when "-1" then raise "Credenciales incorrectas"
-    end
-
-    data[:fecha] = Time.parse(data[:fecha]) if data[:fecha] rescue nil
-    data
   end
 end
