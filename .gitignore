@@ -9,6 +9,7 @@
 /test/version_tmp/
 /tmp/
 /log/
+bin/
 
 
 ## Specific to RubyMotion:
@@ -37,6 +38,7 @@ build/
 
 config/database.yml
 .DS_Store
+.capistrano/
 
 # Cloud 9
 /.c9/

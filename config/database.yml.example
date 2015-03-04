@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  pool: 5
+  timeout: 5000
+  encoding: unicode
+
+development:
+  <<: *default
+  database: labcdmx_development
+  username:
+  password:
+
+test:
+  <<: *default
+  database: labcdmx_test
+  username:
+  password:
+
+production:
+  <<: *default
+  database: labcdmx_production
+  username:
+  password:
