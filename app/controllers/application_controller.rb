@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
 
-      def get_llave
+      #get llave ECOBICI
+    def ecobici_temporal_key
       @llave = Save.all.last
       if  @llave.nil? || @llave.access_token.nil?
         obtener_llave
@@ -10,12 +11,13 @@ class ApplicationController < ActionController::API
       @llave = Save.all.last
     end
 
+    #verificacion llave de ECOBICI
     def llave_invalida
       fecha_actual = Time.now.in_time_zone("America/Mexico_City")
       @llave.fecha.to_time+1.hours > fecha_actual 
     end
 
-
+    #obtener llave de ECOBICI
     def obtener_llave
       url = "https://pubsbapi.smartbike.com/oauth/v2/token?client_id=#{ENV['pusher_client_id']}&client_secret=#{ENV['pusher_client_secret']}&grant_type=client_credentials"
      puts url

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150302192800) do
+ActiveRecord::Schema.define(version: 20150303223408) do
 
   create_table "air_qualities", force: :cascade do |t|
     t.text     "title"
@@ -44,23 +44,17 @@ ActiveRecord::Schema.define(version: 20150302192800) do
     t.integer  "id_station"
     t.text     "name"
     t.text     "address"
-    t.text     "addressNumber"
-    t.text     "zipCode"
-    t.text     "districtCode"
-    t.text     "nearbyStations"
+    t.text     "address_number"
+    t.text     "zip_code"
+    t.text     "district_code"
+    t.text     "nearby_stations"
     t.text     "location"
-    t.text     "stationType"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-  end
-
-  create_table "bicycle_stations_statuses", force: :cascade do |t|
-    t.integer  "id_station"
+    t.text     "station_type"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.string   "status"
     t.string   "bikes"
     t.string   "slots"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "saves", force: :cascade do |t|
