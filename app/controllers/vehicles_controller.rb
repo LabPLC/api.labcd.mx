@@ -20,7 +20,7 @@ class VehiclesController < ApplicationController
 
         if @vehicle.nil?
           save_all_information(placa)
-        elsif @vehicle.created_at < Time.now - 10.day
+        elsif @vehicle.created_at < Time.now - 1.day
            save_all_information(placa)
         end
        render json:   {
