@@ -1,9 +1,13 @@
 source 'http://rubygems.org'
 
 ruby '2.2.0'
+
 gem 'rails', '4.2.0'
 gem 'rails-api'
-gem 'sqlite3'
+
+# PostgreSQL as DB
+gem 'pg'
+
 gem 'savon'
 gem 'nokogiri', '~> 1.6.6.2'
 gem 'httparty', '~> 0.13.3'
@@ -18,6 +22,13 @@ end
 group :test do
   gem "database_cleaner"
 end
+
+# Deployment tools
+gem 'capistrano', '~> 3.3.0'
+gem 'capistrano-bundler', '~> 1.1.2'
+gem 'capistrano-rails', '~> 1.1.1'
+gem 'capistrano-rvm', github: "capistrano/rvm"
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
