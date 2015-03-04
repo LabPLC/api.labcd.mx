@@ -4,26 +4,39 @@ class VehiclesController < ApplicationController
   # GET /vehicles
   # GET /vehicles.json
   def index
-    @vehicles = Vehicle.all
-      if @vehicles.nil? || @vehicles.empty?
-      return render json: []
-    end
-    render json: @vehicles
-
+  
+    render json: [aviso: 'ingresa una placa ejemplo 819UTT']
+  
   end
 
   # GET /vehicles/1
   # GET /vehicles/1.json
   def show
-    render json: save_vehicle(params[:id])
+   save_vehicle(params[:id].upcase)
   end
 
-  def save_vehicle(placa)
-    @url = "http://datos.labplc.mx/movilidad/vehiculos/#{placa}.json"
+  def save_vehicle(placa) 
+        @vehicle = Vehicle.where(placa: placa).first
+
+        if @vehicle.nil?
+          save_all_information(placa)
+        elsif @vehicle.created_at < Time.now - 10.day
+           save_all_information(placa)
+        end
+       render json:   {
+          :vehicle => Vehicle.where(placa: placa).first,
+          :verifications =>Verification.where(id_vehicle: Vehicle.where(placa: placa).first),
+         :infractions => Infraction.where(id_vehicle: Vehicle.where(placa: placa).first)
+       }
+  end
+
+
+def save_all_information(placa)
+  @url = "http://datos.labplc.mx/movilidad/vehiculos/#{placa}.json"
      json =  response = HTTParty.get(@url)
       response = JSON.parse(json.body)
       #Obtenemos tenencia
-    a =   Vehicle.create(placa: response['consulta']['tenencias']['placa'], 
+    a =   Vehicle.create(placa: response['consulta']['tenencias']['placa'].upcase, 
         fechas_adeudo_tenecia: response['consulta']['tenencias']['adeudos'],
         tiene_adeudo_tenencia: response['consulta']['tenencias']['tieneadeudos'])
 
@@ -60,8 +73,8 @@ class VehiclesController < ApplicationController
             )
       end 
 
-      Vehicle.all
-  end
+end
+
 
   # POST /vehicles
   # POST /vehicles.json
