@@ -60,18 +60,6 @@ ActiveRecord::Schema.define(version: 20150303223408) do
     t.string   "slots"
   end
 
-  create_table "infractions", force: :cascade do |t|
-    t.text     "folio"
-    t.text     "fecha"
-    t.text     "situacion"
-    t.text     "motivo"
-    t.text     "fundamento"
-    t.text     "sancion"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "id_vehicle"
-  end
-
   create_table "saves", force: :cascade do |t|
     t.text     "access_token"
     t.datetime "fecha"
@@ -90,34 +78,5 @@ ActiveRecord::Schema.define(version: 20150303223408) do
   end
 
   add_index "taxis", ["placa"], name: "index_taxis_on_placa", unique: true, using: :btree
-
-  create_table "vehicles", force: :cascade do |t|
-    t.text     "placa"
-    t.text     "fechas_adeudo_tenecia"
-    t.text     "tiene_adeudo_tenencia"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-  end
-
-  create_table "verifications", force: :cascade do |t|
-    t.text     "vin"
-    t.text     "marca"
-    t.text     "submarca"
-    t.text     "modelo"
-    t.text     "combustible"
-    t.text     "certificado"
-    t.text     "cancelado"
-    t.text     "vigencia"
-    t.text     "verificentro"
-    t.text     "linea"
-    t.text     "fecha_verificacion"
-    t.text     "hora_verificacion"
-    t.text     "resultado"
-    t.text     "causa_rechazo"
-    t.text     "equipo_gdf"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-    t.integer  "id_vehicle"
-  end
 
 end
