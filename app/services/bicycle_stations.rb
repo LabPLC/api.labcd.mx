@@ -47,12 +47,12 @@ module BicycleStations
   private
 
   def self.update_bycicle_stations_status(stations_status, stations)
-    stations.each do |station|
-      status = stations_status.select { |status| status["id"] == station.id_station }.first
-      station.status = status["status"]
-      station.slots = status["availability"]["slots"]
-      station.bikes = status["availability"]["bikes"]
-    end
+   # stations.each do |station|
+      status = stations_status.select { |status| status["id"] == stations.id_station }.first
+      stations.status = status["status"]
+      stations.slots = status["availability"]["slots"]
+      stations.bikes = status["availability"]["bikes"]
+    #end
 
     stations
   end
