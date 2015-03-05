@@ -8,7 +8,8 @@ set :deploy_to, "/home/juannpablo/#{fetch(:application)}"
 set :tmp_dir, "/home/juannpablo/tmp"
 
 set :linked_files, %w{config/database.yml config/secrets.yml .env}
-set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :bundle_binstubs, nil
 
 # Default value for :log_level is :debug
 # set :log_level, :debug
