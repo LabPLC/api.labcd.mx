@@ -64,6 +64,8 @@ GEM
     capistrano-rails (1.1.2)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
+    capistrano-rails-console (0.4.0)
+      capistrano (>= 3.0.0, < 4.0.0)
     capistrano-stats (1.1.1)
     coderay (1.1.0)
     colorize (0.7.5)
@@ -201,6 +203,7 @@ DEPENDENCIES
   capistrano (~> 3.3.0)
   capistrano-bundler (~> 1.1.2)
   capistrano-rails (~> 1.1.1)
+  capistrano-rails-console
   capistrano-rvm!
   database_cleaner
   dotenv-rails
