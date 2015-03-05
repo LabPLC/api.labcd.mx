@@ -3,7 +3,7 @@ module Finanzas
   class PagosController < ApplicationController
     before_action :ensure_valid_date_param
 
-    # GET finanzas/pagos/consulta?linea_captura=[string]&importe=[string]&fechapago=[string]
+    # GET finanzas/pagos/consulta?lineacaptura=[string]&importe=[string]&fechapago=[string]
     def consulta
       query_parameters = {
         lineacaptura: params[:lineacaptura] || params[:linea],
