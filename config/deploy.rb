@@ -7,7 +7,7 @@ set :repo_url, 'git@github.com:labplc/api.labcd.mx.git'
 set :deploy_to, "/home/juannpablo/#{fetch(:application)}"
 set :tmp_dir, "/home/juannpablo/tmp"
 
-set :linked_files, %w{config/database.yml config/application.yml config/secrets.yml .env}
+set :linked_files, %w{config/database.yml config/secrets.yml .env}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # Default value for :log_level is :debug

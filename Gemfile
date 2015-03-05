@@ -30,6 +30,9 @@ gem 'capistrano-bundler', '~> 1.1.2'
 gem 'capistrano-rails', '~> 1.1.1'
 gem 'capistrano-rvm', github: "capistrano/rvm"
 
+# Manage ENV variables
+gem 'dotenv-rails'
+
 # Monitoring tools
 gem 'newrelic_rpm'
 

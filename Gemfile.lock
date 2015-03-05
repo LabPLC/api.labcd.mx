@@ -69,6 +69,9 @@ GEM
     colorize (0.7.5)
     database_cleaner (1.4.0)
     diff-lcs (1.2.5)
+    dotenv (2.0.0)
+    dotenv-rails (2.0.0)
+      dotenv (= 2.0.0)
     erubis (2.7.0)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
@@ -200,6 +203,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.1.1)
   capistrano-rvm!
   database_cleaner
+  dotenv-rails
   factory_girl_rails
   figaro
   httparty (~> 0.13.3)
