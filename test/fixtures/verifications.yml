@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  vin: MyText
+  marca: MyText
+  submarca: MyText
+  modelo: MyText
+  combustible: MyText
+  certificado: MyText
+  cancelado: MyText
+  vigencia: MyText
+  verificentro: MyText
+  linea: MyText
+  fecha_verificacion: MyText
+  hora_verificacion: MyText
+  resultado: MyText
+  causa_rechazo: MyText
+  equipo_gdf: MyText
+
+two:
+  vin: MyText
+  marca: MyText
+  submarca: MyText
+  modelo: MyText
+  combustible: MyText
+  certificado: MyText
+  cancelado: MyText
+  vigencia: MyText
+  verificentro: MyText
+  linea: MyText
+  fecha_verificacion: MyText
+  hora_verificacion: MyText
+  resultado: MyText
+  causa_rechazo: MyText
+  equipo_gdf: MyText

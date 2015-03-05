@@ -1,0 +1,18 @@
+postgresql: &postgresql
+  adapter: postgresql
+  host: localhost
+  username: postgres
+  password:
+  database: labcdmx_<%= ENV['RAILS_ENV'] %>
+  min_messages: ERROR
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *postgresql
+
+test:
+  <<: *postgresql
+
+production:
+  <<: *postgresql

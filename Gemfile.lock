@@ -48,6 +48,10 @@ GEM
       gyoku (>= 0.4.0)
       nokogiri
     arel (6.0.0)
+    better_errors (2.1.1)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+      rack (>= 0.9.0)
     builder (3.2.2)
     capistrano (3.3.5)
       capistrano-stats (~> 1.1.0)
@@ -61,6 +65,7 @@ GEM
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
     capistrano-stats (1.1.1)
+    coderay (1.1.0)
     colorize (0.7.5)
     database_cleaner (1.4.0)
     diff-lcs (1.2.5)
@@ -188,6 +193,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  better_errors
   capistrano (~> 3.3.0)
   capistrano-bundler (~> 1.1.2)
   capistrano-rails (~> 1.1.1)

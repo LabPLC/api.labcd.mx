@@ -34,7 +34,7 @@ class SemoviTaxisController < ApplicationController
 
   # GET /placa{.json}
   def show
-    placa = parsed_placa(params)
+    placa = parsed_placa
 
     return render(status: 400, json: {error: 'placa inválida'}) unless placa
 
