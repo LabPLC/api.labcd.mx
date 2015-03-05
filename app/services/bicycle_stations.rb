@@ -48,13 +48,15 @@ module BicycleStations
 
   def self.update_bycicle_stations_status(stations_status, stations)
    # stations.each do |station|
+   unless stations.nil?
       status = stations_status.select { |status| status["id"] == stations.id_station }.first
       stations.status = status["status"]
       stations.slots = status["availability"]["slots"]
       stations.bikes = status["availability"]["bikes"]
-    #end
 
-    stations
+    return stations
+  end
+    nil
   end
 
   def self.generate_bycicle_stations(stations)

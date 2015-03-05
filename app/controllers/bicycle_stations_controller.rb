@@ -17,7 +17,9 @@ class BicycleStationsController < ApplicationController
 
     if @bicycle_station.status_is_present?
       bicycle_stations = BicycleStations.reload_stations_status(url: ecobici_status_api_url, access_token: ecobici_temporal_key.access_token, records: bicycle_station)
-      bicycle_stations.save
+      unless bicycle_stations.nil?
+          bicycle_stations.save
+      end
     end
 
     render json: BicycleStations.station_status_response(@bicycle_station.reload)

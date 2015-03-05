@@ -126,23 +126,23 @@ module BicycleStations
   end
 
   describe 'reload stations status' do
-    attr_reader :fake_response, :stations
+    attr_reader :fake_response, :station
 
     before do
       @fake_response = TestFakeResponse.new("{\"stationsStatus\":[{\"id\":1,\"status\":\"OPN\",\"availability\":{\"bikes\":25,\"slots\":2}},{\"id\":2,\"status\":\"OPN\",\"availability\":{\"bikes\":1,\"slots\":11}}]}")
-      @stations = [TestBicycleStation.new(id_station: 1), TestBicycleStation.new(id_station: 2)]
+      @station = TestBicycleStation.new(id_station: 1)
     end
 
     it 'calls the endpoint with right url and access token' do
       expect(HTTParty).to receive(:get).with("https://www.test.com/status", query: { access_token: "access-token" }).and_return(fake_response)
-      BicycleStations.reload_stations_status(url: "https://www.test.com/status", access_token: "access-token", records: [])
+      BicycleStations.reload_stations_status(url: "https://www.test.com/status", access_token: "access-token", records: nil)
     end
 
     it 'returns the stations list' do
       expect(HTTParty).to receive(:get).with("https://www.test.com/status", query: { access_token: "access-token" }).and_return(fake_response)
-      stations_status_response = BicycleStations.reload_stations_status(url: "https://www.test.com/status", access_token: "access-token", records: stations)
+      stations_status_response = BicycleStations.reload_stations_status(url: "https://www.test.com/status", access_token: "access-token", records: station)
 
-      first_status = stations_status_response.first
+      first_status = stations_status_response
       expect(first_status.id_station).to eq 1
       expect(first_status.status).to eq "OPN"
       expect(first_status.slots).to eq 2

@@ -22,8 +22,8 @@ describe 'Ecobici' do
       expect(station["id"]).to eq 4
       expect(station["name"]).to eq "Station"
       expect(station["status"]).to eq "OPN"
-      expect(station["slots"]).to eq "4"
-      expect(station["bikes"]).to eq "0"
+      expect(station["slots"].length).to_not eq 0
+      expect(station["bikes"].length).to_not eq 0
     end
   end
 end
