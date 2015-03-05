@@ -1,10 +1,11 @@
 require 'httparty'
+require 'open-uri'
+
 class AirQualitiesController < ApplicationController
 
   def index
-    require 'open-uri'
 
-    if Airs.air_qualities_exist?
+    if Airs.air_qualities_does_not_exist?
       Airs.set_air_quality("http://148.243.232.110/xml/app/appcalidadaire.XML")
     end
     render json: Airs.get_air_quality
