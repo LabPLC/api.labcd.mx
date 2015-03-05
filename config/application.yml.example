@@ -1,3 +1,12 @@
-pusher_client_id: tu_llave_ecobici
-pusher_client_secret:  tu_llave_ecobici
-SEMOVI_TAXIS_PASSWORD: tu_llave_semovi
+# API Keys para llamar a cada webservice o 3rd party app
+
+# Ecobici
+ECOBICI_CLIENT_ID: ''
+ECOBICI_CLIENT_SECRET: ''
+
+# Taxis
+SEMOVI_TAXIS_PASSWORD: ''
+
+# Finanzas
+FINANZAS_USUARIO: ''
+FINANZAS_PASSWORD: ''

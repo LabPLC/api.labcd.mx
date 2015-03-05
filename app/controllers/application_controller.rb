@@ -19,7 +19,7 @@ class ApplicationController < ActionController::API
 
     #obtener llave de ECOBICI
     def obtener_llave
-      url = "https://pubsbapi.smartbike.com/oauth/v2/token?client_id=#{ENV['pusher_client_id']}&client_secret=#{ENV['pusher_client_secret']}&grant_type=client_credentials"
+      url = "https://pubsbapi.smartbike.com/oauth/v2/token?client_id=#{ENV['ECOBICI_CLIENT_ID']}&client_secret=#{ENV['ECOBICI_CLIENT_SECRET']}&grant_type=client_credentials"
      puts url
       response = response = HTTParty.get(url)
       json = JSON.parse(response.body)
