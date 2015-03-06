@@ -10,4 +10,6 @@ Rails.application.routes.draw do
     end
   end
   resources :testamentos, only: [:index, :show]
+
+  resources :corralones, only: [:index, :show]
 end

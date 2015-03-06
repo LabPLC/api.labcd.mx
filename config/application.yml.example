@@ -12,6 +12,9 @@ SEMOVI_TAXIS_PASSWORD: ''
 FINANZAS_USUARIO: ''
 FINANZAS_PASSWORD: ''
 
+# SSP
+SSP_CORRALONES: ''
+
 
 ############
 # 3rd party apps de monitoreo
