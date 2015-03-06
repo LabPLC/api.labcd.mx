@@ -8,7 +8,13 @@ module V1
 
       def show
         placa = params[:id].upcase
-        render json:  Corralones.call_service("http://201.144.220.174/mpws/index.php/corralon/buscar_en_corralon", placa)
+          exp_placa = '^(\d{3}[A-Z]{3})$'
+        if placa.match(exp_placa)
+          render json:  Corralones.call_service("http://201.144.220.174/mpws/index.php/corralon/buscar_en_corralon", placa)
+        else
+           render json:  ['error: placa invalida']
+         end 
+       
       end
 
     end
