@@ -12,14 +12,20 @@ Rails.application.routes.draw do
     end
 
     namespace :finanzas do
-      resources :linea_captura
+      resources :linea_captura, only: [:index, :show]
       resources :pagos, only: [] do
         get :consulta, on: :collection
       end
     end
 
-  end
-  resources :testamentos, only: [:index, :show]
+    namespace :servicios do
+      resources :testamentos, only: [:index, :show]
+    end
 
-  resources :corralones, only: [:index, :show]
+    namespace :seguridad do
+      resources :corralones, only: [:index, :show]
+    end
+
+  end
+
 end
