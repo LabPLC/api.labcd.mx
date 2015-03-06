@@ -1,14 +1,18 @@
 module Vehicles
 
 def self.up_to_date?(placa) 
-        @vehicle = Vehicle.where(placa: placa).first
-          if @vehicle.nil? || @vehicle.created_at < Time.now - 1.day
-            true
-        end
-  end
-          #save_all_information(placa)
-           #save_all_information(placa)
+      exp_placa = '^(\d{3}[A-Z]{3})$'
+      if placa.upcase.match(exp_placa)
+          @vehicle = Vehicle.where(placa: placa).first
 
+          if @vehicle.nil? || @vehicle.created_at < Time.now - 1.day
+            return  true
+          else
+            return false
+          end
+      end
+      return   false
+  end
 
 def self.vehicle_responce(placa)
          {
