@@ -65,6 +65,7 @@ GEM
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
     capistrano-stats (1.1.1)
+    certified (1.0.0)
     coderay (1.1.0)
     colorize (0.7.5)
     database_cleaner (1.4.0)
@@ -198,6 +199,7 @@ DEPENDENCIES
   capistrano-bundler (~> 1.1.2)
   capistrano-rails (~> 1.1.1)
   capistrano-rvm!
+  certified (~> 1.0.0)
   database_cleaner
   factory_girl_rails
   figaro
