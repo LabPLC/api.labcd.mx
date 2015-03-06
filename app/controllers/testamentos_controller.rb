@@ -53,13 +53,10 @@
        @@cliente = Burocracia::WS.new(@@wsdl) do |client|
         client.default_action = :consulta_edo_fecha_captura
         client.default_response = :consulta_edo_fecha_captura_response
-      end
-      
+      end    
         response = @@cliente.call({:fecha_inicio => params[:fecha_inicio],:fecha_final => params[:fecha_final] })
-
-
-
-
+      else
+        response = [error: 'URL mal formada']
     end
       rescue Exception => e
         return render status: 500, json: {error: e.message}
