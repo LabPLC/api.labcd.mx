@@ -1,6 +1,4 @@
   class TestamentosController < ApplicationController
-    require 'openssl'
-    OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
     @@wsdl = 'https://187.210.31.214:8443/WSConsulta/Consultas?wsdl'
 
 
