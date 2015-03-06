@@ -3,7 +3,8 @@ require 'rails_helper'
 describe 'Airs' do
   describe 'GET index' do
     it 'returns the air quality element' do
-      get '/air_qualities'
+
+      get '/v1/aire/calidad-actual'
       air = JSON.parse(response.body)
 
       expect(response_endpoint_keys_in(body: air, children: [

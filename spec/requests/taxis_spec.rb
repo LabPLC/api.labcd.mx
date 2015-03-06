@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Vehicles' do
   describe 'GET show' do
     it 'returns the vehicle information' do
-      get '/semovi_taxis/A05601'
+      get '/v1/movilidad/taxis/A05601'
       taxi = JSON.parse(response.body)
 
       expect(response_endpoint_keys_in(body: taxi, children: [

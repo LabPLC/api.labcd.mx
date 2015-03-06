@@ -4,7 +4,7 @@ require 'rails_helper'
 describe 'Semovi taxis' do
   describe 'GET /' do
     it 'returns no taxis' do
-      get '/semovi_taxis'
+      get '/v1/movilidad/taxis'
 
       expect(response.status).to eq 200
       taxis = JSON.parse(response.body)
@@ -13,7 +13,7 @@ describe 'Semovi taxis' do
 
     it 'returns taxis list' do
       create_list(:taxi, 11)
-      get '/semovi_taxis'
+      get '/v1/movilidad/taxis'
 
       expect(response.status).to eq 200
       taxis = JSON.parse(response.body)
@@ -27,10 +27,10 @@ describe 'Semovi taxis' do
 
       request_params = { id: 'a12345' }
 
-      get semovi_taxi_path(request_params)
+      get v1_movilidad_semovi_taxi_path(request_params)
 
       expect(response.status).to eq 200
-      
+
       taxi = JSON.parse(response.body)
       expect(taxi["code"]).to eq 'taxi-code'
       expect(taxi["placa"]).to eq 'A12345'
@@ -38,8 +38,8 @@ describe 'Semovi taxis' do
 
     it "returns 'placa invalida' error message" do
       request_params = { id: 'inv-pl' }
-      
-      get semovi_taxi_path(request_params)
+
+      get v1_movilidad_semovi_taxi_path(request_params)
 
       error = JSON.parse(response.body)["error"]
       expect(error).to eq "placa inválida"
