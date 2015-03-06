@@ -9,13 +9,6 @@ Rails.application.routes.draw do
       get :consulta, on: :collection
     end
   end
-<<<<<<< HEAD
     resources :testamentos, only: [:index, :show]
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-=======
-  resources :testamentos, only: [:index, :show]
->>>>>>> 5edb4777af2558d28a7245b24f4dc6bddb7430bc
-
   resources :corralones, only: [:index, :show]
 end
