@@ -1,14 +1,16 @@
 # config valid only for current version of Capistrano
 lock '3.3.5'
 
+
 set :application, 'labcdmx'
 set :repo_url, 'git@github.com:labplc/api.labcd.mx.git'
 
 set :deploy_to, "/home/juannpablo/#{fetch(:application)}"
 set :tmp_dir, "/home/juannpablo/tmp"
 
-set :linked_files, %w{config/database.yml}
-set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_files, %w{config/database.yml config/secrets.yml .env}
+set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :bundle_binstubs, nil
 
 # Default value for :log_level is :debug
 # set :log_level, :debug
@@ -33,5 +35,6 @@ namespace :deploy do
 
   after :publishing, 'deploy:restart'
   after :finishing, 'deploy:cleanup'
+  after "deploy:finished", "airbrake:deploy"
 
 end

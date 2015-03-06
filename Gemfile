@@ -13,14 +13,14 @@ gem 'nokogiri', '~> 1.6.6.2'
 gem 'httparty', '~> 0.13.3'
 gem "figaro"
 
+group :development do
+  gem "better_errors"
+end
+
 group :development, :test do
   gem "rspec-rails", '~> 3.0.0'
   gem "factory_girl_rails"
   gem 'spring'
-  gem "better_errors"
-end
-
-group :test do
   gem "database_cleaner"
 end
 
@@ -29,6 +29,14 @@ gem 'capistrano', '~> 3.3.0'
 gem 'capistrano-bundler', '~> 1.1.2'
 gem 'capistrano-rails', '~> 1.1.1'
 gem 'capistrano-rvm', github: "capistrano/rvm"
+gem 'capistrano-rails-console'
+
+# Manage ENV variables
+gem 'dotenv-rails'
+
+# Monitoring tools
+gem 'newrelic_rpm'
+gem 'airbrake'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
