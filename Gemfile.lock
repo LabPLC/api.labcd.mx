@@ -44,6 +44,9 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    airbrake (4.1.0)
+      builder
+      multi_json
     akami (1.2.2)
       gyoku (>= 0.4.0)
       nokogiri
@@ -199,6 +202,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrake
   better_errors
   capistrano (~> 3.3.0)
   capistrano-bundler (~> 1.1.2)
