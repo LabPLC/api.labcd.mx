@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
+
+  root to: 'welcome#index'
+
   namespace :v1 do
+
+    root to: 'base#version'
 
     namespace :movilidad do
       resources :bicycle_stations, path: 'estaciones-ecobici', only: [:index, :show]

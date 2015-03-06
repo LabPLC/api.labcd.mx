@@ -1,6 +1,10 @@
 module V1
   class BaseController < ApplicationController
 
+    def version
+      render json: { version: 1 }, status: :ok
+    end
+
     #get llave ECOBICI
     def ecobici_temporal_key
       @llave = Save.all.last
