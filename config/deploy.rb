@@ -1,8 +1,6 @@
 # config valid only for current version of Capistrano
 lock '3.3.5'
 
-require './config/boot'
-require 'airbrake/capistrano'
 
 set :application, 'labcdmx'
 set :repo_url, 'git@github.com:labplc/api.labcd.mx.git'
@@ -37,5 +35,6 @@ namespace :deploy do
 
   after :publishing, 'deploy:restart'
   after :finishing, 'deploy:cleanup'
+  after "deploy:finished", "airbrake:deploy"
 
 end
