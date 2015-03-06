@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Vehicles' do
   describe 'GET show' do
     it 'returns the vehicle information' do
-      get '/vehicles/819UTT'
+      get '/v1/movilidad/vehiculos/819UTT'
 
       vehicle = JSON.parse(response.body)
 
