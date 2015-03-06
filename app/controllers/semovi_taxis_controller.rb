@@ -24,12 +24,7 @@ class SemoviTaxisController < ApplicationController
 
   # GET /
   def index
-    @taxis = Taxi.all
-    if @taxis.nil?
-      # debería de regresar un 204, pero rails no regresa content con eso
-      return render json: []
-    end
-    render json: @taxis
+    render json: [aviso: 'ingresa una placa ejemplo A05601']
   end
 
   # GET /placa{.json}
@@ -38,18 +33,7 @@ class SemoviTaxisController < ApplicationController
 
     return render(status: 400, json: {error: 'placa inválida'}) unless placa
 
-    @taxi = Taxi.where(placa: placa).first
-    status = 200
-    if !@taxi
-      status = 201
-      begin
-        @taxi = Taxi.create @@cliente.call({'ps_placa' => placa})
-      rescue Exception => e
-        return render status: 500, json: {error: e.message}
-      end
-    end
-
-    render status: status, json: @taxi
+    render status: status, json: fetch_taxi(placa)
   end
 
 
@@ -64,5 +48,39 @@ class SemoviTaxisController < ApplicationController
     if @@exp_placa.match(placa)
       placa.upcase
     end
+  end
+
+  def fetch_all_taxis
+    key = "semovi_taxis/all_taxis"
+    return Rails.cache.fetch(key) if Rails.cache.fetch(key).present?
+
+    Rails.cache.fetch(key) if Rails.cache.write(key, search_all_plates)
+  end
+
+  def fetch_taxi(plate)
+    key = "semovi_taxis/#{plate}"
+    return Rails.cache.fetch(key) if Rails.cache.fetch(key).present?
+
+    Rails.cache.fetch(key) if Rails.cache.write(key, search_plate(plate))
+  end
+
+  def search_all_plates
+    fetch_taxis = Taxi.all
+    fetch_taxis = [] if fetch_taxis.blank?
+    fetch_taxis
+  end
+
+  def search_plate(plate)
+    taxi = Taxi.where(placa: plate).first
+    status = 200
+    if !taxi
+      status = 201
+      begin
+        taxi = Taxi.create @@cliente.call({'ps_placa' => plate})
+      rescue Exception => e
+        return render status: 500, json: {error: e.message}
+      end
+    end
+    taxi
   end
 end
