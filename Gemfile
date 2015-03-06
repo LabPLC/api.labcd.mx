@@ -13,17 +13,14 @@ gem 'nokogiri', '~> 1.6.6.2'
 gem 'httparty', '~> 0.13.3'
 gem "figaro"
 
-group :development, :test do
-  gem "rspec-rails", '~> 3.0.0'
-  gem "factory_girl_rails"
-  gem 'spring'
-end
-
 group :development do
   gem "better_errors"
 end
 
-group :test do
+group :development, :test do
+  gem "rspec-rails", '~> 3.0.0'
+  gem "factory_girl_rails"
+  gem 'spring'
   gem "database_cleaner"
 end
 
