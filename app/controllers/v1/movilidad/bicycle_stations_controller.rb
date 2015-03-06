@@ -6,6 +6,7 @@ module V1
 
       def index
         @bicycle_stations = BicycleStation.all
+        @bicycle_stations
 
         unless BicycleStations.are_up_to_date?(@bicycle_stations)
           BicycleStation.destroy_all
@@ -13,7 +14,7 @@ module V1
           @bicycle_stations.each(&:save)
         end
 
-        render json: BicycleStations.stations_for(@bicycle_stations)
+        render json: BicycleStations.stations_for(@bicycle_stations.page(params[:page]).per(50))
       end
 
       def show
