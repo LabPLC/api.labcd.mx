@@ -9,4 +9,5 @@ Rails.application.routes.draw do
       get :consulta, on: :collection
     end
   end
+  resources :testamentos, only: [:index, :show]
 end
