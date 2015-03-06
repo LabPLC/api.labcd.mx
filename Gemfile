@@ -29,6 +29,14 @@ gem 'capistrano', '~> 3.3.0'
 gem 'capistrano-bundler', '~> 1.1.2'
 gem 'capistrano-rails', '~> 1.1.1'
 gem 'capistrano-rvm', github: "capistrano/rvm"
+gem 'capistrano-rails-console'
+
+# Manage ENV variables
+gem 'dotenv-rails'
+
+# Monitoring tools
+gem 'newrelic_rpm'
+gem 'airbrake'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
