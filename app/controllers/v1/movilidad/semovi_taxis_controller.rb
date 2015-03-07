@@ -1,5 +1,5 @@
 #encoding: utf-8
-require "Key"
+require "redis_store"
 
 module V1
   module Movilidad
@@ -34,8 +34,7 @@ module V1
         plate = parse_vehicle_plate
         # Let's check for the taxi plate in cache
 
-        taxi =    get_from_cache(plate) ||
-                  fetch_taxi_from_db(plate) ||
+        taxi =    RedisStore.fetch_item_from_cache_or_locally_for(Taxi, plate, { placa: plate }) ||
                   look_for_taxi_in_external_api(plate)
 
         if taxi
@@ -61,34 +60,8 @@ module V1
         end
       end
 
-      def fetch_taxi_from_db(plate)
-        set_in_cache(plate, Taxi.find_by(placa: plate))
-      end
-
       def look_for_taxi_in_external_api(plate)
         set_in_cache( plate, Taxi.create!(@@cliente.call({'ps_placa' => plate})) )
-      end
-
-      def set_in_cache(keyId, taxi)
-        # check that there is an object initilized
-        return nil if keyId.nil? || taxi.nil?
-
-        key = Key.create(Taxi, keyId)
-        if REDIS.set(key, taxi.to_json)
-          puts "REDIS: SETTING VALUE FOR #{keyId}"
-          taxi
-        else
-          raise "Wasn't able to set taxi in cache."
-        end
-      end
-
-      def get_from_cache(keyId)
-        key = Key.create(Taxi, keyId)
-        value = REDIS.get(key)
-        if value
-          puts "REDIS: GETTING VALUE FOR #{keyId}"
-          value
-        end
       end
     end
   end
