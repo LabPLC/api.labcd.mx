@@ -1,4 +1,6 @@
 #encoding: utf-8
+require "Key"
+
 module V1
   module Movilidad
     class SemoviTaxisController < ApplicationController
@@ -24,66 +26,69 @@ module V1
         }
       end
 
-      # GET /
       def index
         render json: [aviso: 'ingresa una placa ejemplo A05601']
       end
 
-      # GET /placa{.json}
       def show
-        placa = parsed_placa
+        plate = parse_vehicle_plate
+        # Let's check for the taxi plate in cache
 
-        return render(status: 400, json: {error: 'placa inválida'}) unless placa
+        taxi =    get_from_cache(plate) ||
+                  fetch_taxi_from_db(plate) ||
+                  look_for_taxi_in_external_api(plate)
 
-        render status: status, json: fetch_taxi(placa)
+        if taxi
+          render status: status, json: taxi
+        else
+          render(status: 400, json: {error: 'Placa inválida.'})
+        end
       end
 
 
       private
-      # Valida y convierte params en placas que acepte el webservice
-      #
-      # @param params [Hash] Los parámetros del request
-      #
-      # @return [String, NilClass] la placa limpia
-      def parsed_placa
+
+      def parse_vehicle_plate
+        # Valida y convierte params en placas que acepte el webservice
+        #
+        # @param params [Hash] Reques parameters
+        #
+        # @return [String, NilClass] Clean plate
+
         placa = params[:id].gsub(/[^abm\d]/i, '')
         if @@exp_placa.match(placa)
           placa.upcase
         end
       end
 
-      def fetch_all_taxis
-        key = "semovi_taxis/all_taxis"
-        return Rails.cache.fetch(key) if Rails.cache.fetch(key).present?
-
-        Rails.cache.fetch(key) if Rails.cache.write(key, search_all_plates)
+      def fetch_taxi_from_db(plate)
+        set_in_cache(plate, Taxi.find_by(placa: plate))
       end
 
-      def fetch_taxi(plate)
-        key = "semovi_taxis/#{plate}"
-        return Rails.cache.fetch(key) if Rails.cache.fetch(key).present?
-
-        Rails.cache.fetch(key) if Rails.cache.write(key, search_plate(plate))
+      def look_for_taxi_in_external_api(plate)
+        set_in_cache( plate, Taxi.create!(@@cliente.call({'ps_placa' => plate})) )
       end
 
-      def search_all_plates
-        fetch_taxis = Taxi.all
-        fetch_taxis = [] if fetch_taxis.blank?
-        fetch_taxis
-      end
+      def set_in_cache(keyId, taxi)
+        # check that there is an object initilized
+        return nil if keyId.nil? || taxi.nil?
 
-      def search_plate(plate)
-        taxi = Taxi.where(placa: plate).first
-        status = 200
-        if !taxi
-          status = 201
-          begin
-            taxi = Taxi.create @@cliente.call({'ps_placa' => plate})
-          rescue Exception => e
-            return render status: 500, json: {error: e.message}
-          end
+        key = Key.create(Taxi, keyId)
+        if REDIS.set(key, taxi.to_json)
+          puts "REDIS: SETTING VALUE FOR #{keyId}"
+          taxi
+        else
+          raise "Wasn't able to set taxi in cache."
         end
-        taxi
+      end
+
+      def get_from_cache(keyId)
+        key = Key.create(Taxi, keyId)
+        value = REDIS.get(key)
+        if value
+          puts "REDIS: GETTING VALUE FOR #{keyId}"
+          value
+        end
       end
     end
   end
