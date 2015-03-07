@@ -1,7 +1,7 @@
 module V1
   module Servicios
     class TestamentosController < ApplicationController
-      @@wsdl = 'https://187.210.31.214:8443/WSConsulta/Consultas?wsdl'
+      @@wsdl = 'http://187.210.31.214:8443/WSConsulta/Consultas?wsdl'
 
 
       def index
