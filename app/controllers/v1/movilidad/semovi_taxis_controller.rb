@@ -33,8 +33,8 @@ module V1
       def show
         plate = parse_vehicle_plate
         # Let's check for the taxi plate in cache
-
         taxi =    RedisStore.fetch_item_from_cache_or_locally_for(Taxi, plate, { placa: plate }) ||
+                  # this should be in a task that updates every "N" minutes
                   look_for_taxi_in_external_api(plate)
 
         if taxi
@@ -50,18 +50,18 @@ module V1
       def parse_vehicle_plate
         # Valida y convierte params en placas que acepte el webservice
         #
-        # @param params [Hash] Reques parameters
+        # @param params [Hash] Request parameters
         #
         # @return [String, NilClass] Clean plate
 
-        placa = params[:id].gsub(/[^abm\d]/i, '')
-        if @@exp_placa.match(placa)
-          placa.upcase
+        plate = params[:id].gsub(/[^abm\d]/i, '')
+        if @@exp_placa.match(plate)
+          plate.upcase
         end
       end
 
       def look_for_taxi_in_external_api(plate)
-        set_in_cache( plate, Taxi.create!(@@cliente.call({'ps_placa' => plate})) )
+        RedisStore.set_in_cache( plate, Taxi.create!(@@cliente.call({'ps_placa' => plate})) )
       end
     end
   end
