@@ -6,6 +6,7 @@ module V1
 
       def index
         @bicycle_stations = BicycleStation.all
+        @bicycle_stations
 
         unless BicycleStations.are_up_to_date?(@bicycle_stations)
           BicycleStation.destroy_all
@@ -13,7 +14,7 @@ module V1
           @bicycle_stations.each(&:save)
         end
 
-        render json: BicycleStations.stations_for(@bicycle_stations)
+        render json: fetch_bicycle_stations_with_pagination(params[:page], 50)
       end
 
       def show
@@ -26,10 +27,24 @@ module V1
           end
         end
 
-        render json: BicycleStations.station_status_response(@bicycle_station.reload)
+        render json: fetch_bicycle_station(@bicycle_station)
       end
 
       private
+
+      def fetch_bicycle_station(bicycle_station)
+        key = "bicycle_station/#{bicycle_station.id}"
+        return Rails.cache.fetch(key) if Rails.cache.fetch(key).present?
+
+        Rails.cache.fetch(key) if Rails.cache.write(key, BicycleStations.station_status_response(bicycle_station.reload))
+      end
+
+      def fetch_bicycle_stations_with_pagination(page_number, limit)
+        key = "bicycle_stations/#{page_number}"
+        return Rails.cache.fetch(key) if Rails.cache.fetch(key).present?
+
+        Rails.cache.fetch(key) if Rails.cache.write(key, BicycleStations.stations_for(@bicycle_stations.page(page_number).per(limit)))
+      end
 
       def bicycle_station
         BicycleStation.find_by_id_station(params[:id])

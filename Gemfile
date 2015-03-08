@@ -12,6 +12,7 @@ gem 'savon'
 gem 'nokogiri', '~> 1.6.6.2'
 gem 'httparty', '~> 0.13.3'
 gem "figaro"
+gem 'kaminari'
 
 group :development do
   gem "better_errors"
