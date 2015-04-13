@@ -21,7 +21,7 @@ api.labcd.mx
 #### Las APIs del Laboratorio de Datos disponibles son:
 * [Calidad del aire][aire]
 * [Ecobici][ecobici]
-* [Lineas de captura][lineas]
+* [Líneas de captura][lineas]
 * [Pagos][pagos]
 * [Taxis][taxis]
 * [Vehículos][vehiculos]
