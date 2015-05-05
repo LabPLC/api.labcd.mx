@@ -1,7 +1,7 @@
 module Vehicles
 
 def self.up_to_date?(placa) 
-      exp_placa = '^((\d{3}[a-zA-Z]{3})|([a-zA-Z]{1}\d{2}[a-zA-Z]{3})|([a-zA-Z]{3}\d{3,4})|([a-zA-Z]{1}\d{5}))$'
+      exp_placa = '^((\d{3}[A-Z]{2,3})|([A-Z]{1}\d{2}[A-Z]{3})|([A-Z]{3}\d{4})|([A-Z]{1}\d{5}))$'
       if placa.upcase.match(exp_placa)
           @vehicle = Vehicle.where(placa: placa).first
 
