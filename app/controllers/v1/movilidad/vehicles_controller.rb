@@ -9,11 +9,15 @@ module V1
 
       def show
         @placa = params[:id].upcase
-        if Vehicles.up_to_date?(@placa)
-          Vehicles.reload_vehicle("http://datos.labplc.mx/movilidad/vehiculos/#{@placa}.json")
-          render json:  Vehicles.vehicle_responce(@placa)
+        if Vehicles.placa_valida(@placa)
+          if Vehicles.up_to_date?(@placa)
+            Vehicles.reload_vehicle("http://datos.labplc.mx/movilidad/vehiculos/#{@placa}.json")
+            render json:  Vehicles.vehicle_responce(@placa)
+          else
+              render json:  Vehicles.vehicle_responce(@placa)
+          end
         else
-          render json:  ['error: placa invalida']
+             render json:  ['error: placa invalida']
         end
         
       end
