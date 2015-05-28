@@ -4,14 +4,16 @@ def self.up_to_date?(placa)
       exp_placa = '^((\d{3}[A-Z]{2,3})|([A-Z]{1}\d{2}[A-Z]{3})|([A-Z]{3}\d{4})|([A-Z]{1}\d{5})|(\d{5})|([A-Z]{1}\d{3}[A-Z]{1})|([A-Z]{3}\d{2}))$'
       if placa.upcase.match(exp_placa)
           @vehicle = Vehicle.where(placa: placa).first
-
+          puts @vehicle.created_at
+          puts Time.now - 1.day
+          puts @vehicle.created_at < Time.now.utc- 1.day
           if @vehicle.nil? || @vehicle.created_at < Time.now - 1.day
+            puts 'true'
             return  true
           else
+             puts 'false'
             return false
           end
-      end
-      return   false
   end
 
 def self.vehicle_responce(placa)
@@ -23,9 +25,20 @@ def self.vehicle_responce(placa)
 end
 
 
+
+def self.placa_valida(placa) 
+   exp_placa = '^(\d{3}[A-Z]{3})$'
+      if placa.upcase.match(exp_placa)
+        return true
+      end
+      return false
+end
+
   def self.reload_vehicle(url)
      json =  response = HTTParty.get(url)
       response = JSON.parse(json.body)
+
+      Vehicle.where(placa: response['consulta']['tenencias']['placa'].upcase).destroy_all
       #Obtenemos tenencia
     a =   Vehicle.create(placa: response['consulta']['tenencias']['placa'].upcase, 
         fechas_adeudo_tenecia: response['consulta']['tenencias']['adeudos'],
