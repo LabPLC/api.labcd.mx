@@ -11,6 +11,7 @@ def self.up_to_date?(placa)
              puts 'false'
             return false
           end
+      end
   end
 
 def self.vehicle_responce(placa)
