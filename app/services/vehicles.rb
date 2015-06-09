@@ -1,12 +1,9 @@
 module Vehicles
 
 def self.up_to_date?(placa) 
-      exp_placa = '^((\d{3}[A-Z]{2,3})|([A-Z]{1}\d{2}[A-Z]{3})|([A-Z]{3}\d{4})|([A-Z]{1}\d{5})|(\d{5})|([A-Z]{1}\d{3}[A-Z]{1})|([A-Z]{3}\d{2}))$'
+        exp_placa = '^( (\d{3}[A-Z]{2,3})|([A-Z]{1}\d{2}[A-Z]{3})|([A-Z]{3}\d{4})|([A-Z]{1}\d{5})|(\d{5})|([A-Z]{1}\d{3}[A-Z]{1})|([A-Z]{3}\d{2})|([A-Z]{1}\d{2}[A-Z]{3}))$'
       if placa.upcase.match(exp_placa)
           @vehicle = Vehicle.where(placa: placa).first
-          puts @vehicle.created_at
-          puts Time.now - 1.day
-          puts @vehicle.created_at < Time.now.utc- 1.day
           if @vehicle.nil? || @vehicle.created_at < Time.now - 1.day
             puts 'true'
             return  true
@@ -14,6 +11,7 @@ def self.up_to_date?(placa)
              puts 'false'
             return false
           end
+      end
   end
 
 def self.vehicle_responce(placa)
@@ -27,7 +25,7 @@ end
 
 
 def self.placa_valida(placa) 
-   exp_placa = '^(\d{3}[A-Z]{3})$'
+    exp_placa = '^( (\d{3}[A-Z]{2,3})|([A-Z]{1}\d{2}[A-Z]{3})|([A-Z]{3}\d{4})|([A-Z]{1}\d{5})|(\d{5})|([A-Z]{1}\d{3}[A-Z]{1})|([A-Z]{3}\d{2})|([A-Z]{1}\d{2}[A-Z]{3}))$'
       if placa.upcase.match(exp_placa)
         return true
       end
