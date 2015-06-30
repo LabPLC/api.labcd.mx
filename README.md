@@ -42,6 +42,10 @@ api.labcd.mx
 
 Mantenemos la conversación del proyecto en nuestra página de problemas [issues] (https://github.com/LabPLC/api.labcd.mx/issues). Si usted tiene cualquier otra pregunta, nos puede contactar por correo <equipo@codeandomexico.org> o al Laboratirio para la ciudad con <daniel@labcd.mx>.
 
+##¿Quiéres contribuir a las APIs?. Puedes colaborar con:
+[código](https://github.com/LabPLC/api.labcd.mx/pulls),
+[ideas](https://github.com/LabPLC/api.labcd.mx/issues) y 
+[bugs](https://github.com/LabPLC/api.labcd.mx/issues). O lee el archvo [COLABORA](/CONTRIBUTE.md).
 
 ##Licencia
 
