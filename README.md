@@ -45,7 +45,7 @@ Mantenemos la conversación del proyecto en nuestra página de problemas [issues
 ##¿Quiéres contribuir a las APIs?. Puedes colaborar con:
 [código](https://github.com/LabPLC/api.labcd.mx/pulls),
 [ideas](https://github.com/LabPLC/api.labcd.mx/issues) y 
-[bugs](https://github.com/LabPLC/api.labcd.mx/issues). O lee el archvo [COLABORA](/CONTRIBUTE.md).
+[bugs](https://github.com/LabPLC/api.labcd.mx/issues). Lee el archvo [COLABORA](/CONTRIBUYE.md).
 
 ##Licencia
 
