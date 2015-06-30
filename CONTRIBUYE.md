@@ -1,4 +1,4 @@
-# Contribuye a repo-guidelines
+# Contribuye a la API del LABCDMX
 
 1. [Involucrarse](#involucrarse)
 2. [Discusión](#discusión)
