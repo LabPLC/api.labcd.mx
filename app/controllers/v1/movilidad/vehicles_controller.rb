@@ -11,7 +11,7 @@ module V1
         @placa = params[:id].upcase
         if Vehicles.placa_valida(@placa)
           if Vehicles.up_to_date?(@placa)
-            Vehicles.reload_vehicle("http://datos.labplc.mx/movilidad/vehiculos/#{@placa}.json")
+            Vehicles.reload_vehicle("http://146.148.70.241/movilidad/vehiculos/#{@placa}.json")
             render json:  Vehicles.vehicle_responce(@placa)
           else
               render json:  Vehicles.vehicle_responce(@placa)
