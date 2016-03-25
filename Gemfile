@@ -14,6 +14,9 @@ gem 'httparty', '~> 0.13.3'
 gem "figaro"
 gem 'kaminari'
 
+# Cache store
+gem 'redis'
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"

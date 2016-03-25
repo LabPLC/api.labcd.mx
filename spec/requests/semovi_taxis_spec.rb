@@ -2,26 +2,6 @@
 require 'rails_helper'
 
 describe 'Semovi taxis' do
-
-  # describe 'GET /' do
-  #   it 'returns no taxis' do
-  #     get '/semovi_taxis'
-  #
-  #     expect(response.status).to eq 200
-  #     taxis = JSON.parse(response.body)
-  #     expect(taxis).to be
-  #   end
-  #
-  #   it 'returns taxis list' do
-  #     create_list(:taxi, 11)
-  #     get '/semovi_taxis'
-  #
-  #     expect(response.status).to eq 200
-  #     taxis = JSON.parse(response.body)
-  #     expect(taxis.present?).to be
-  #   end
-  # end
-
   describe 'GET /:placa' do
     it 'returns a taxi' do
       create :taxi, placa: 'A12345', code: 'taxi-code'
