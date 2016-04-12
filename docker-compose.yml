@@ -1,0 +1,19 @@
+postgres:
+  image: postgres:9.4
+  env_file: keys.env
+  
+apilabcdmx:
+  build: .
+  ports:
+    - "8080:80"
+  links:
+    - postgres
+  env_file: keys.env
+  environment:
+    PASSENGER_APP_ENV: production
+
+backup:
+  image: civicadigital/backup
+  links:
+    - postgres
+  # env_file: backup.env
